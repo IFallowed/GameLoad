@@ -38,6 +38,11 @@ public class MGameController {
 	@Autowired
 	private GameService gameService;
 
+	/**
+	 * @Description: 获取所有的游戏类型
+	 * @Return Type:Map<String,Object>
+	 * @return
+	 */
 	@RequestMapping("/getAllTypes")
 	@ResponseBody
 	public Map<String,Object> getAllTypes(){
@@ -134,6 +139,17 @@ public class MGameController {
 		return "/game/updateGame";
 	}
 	
+	/**
+	 * @Description: 转向修改页面
+	 * @Return Type:String
+	 * @param game
+	 * @param coverfile
+	 * @param screenfile1
+	 * @param screenfile2
+	 * @param screenfile3
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/toUpdate")
 	public String toUpdate(Game game,MultipartFile coverfile,MultipartFile screenfile1,MultipartFile screenfile2,MultipartFile screenfile3) throws Exception {
 		System.out.println("MGameController.toUpdate()");

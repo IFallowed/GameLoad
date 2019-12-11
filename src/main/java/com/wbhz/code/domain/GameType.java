@@ -23,6 +23,7 @@ public class GameType {
 	private Long id;
 	private String name;
 	private String status;
+	//封面
 	private String picture;
 	private Date createTime;
 	private Date updateTime;

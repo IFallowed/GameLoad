@@ -84,6 +84,17 @@ public class UserController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 用户注册请求
+	 * @Return Type:Map<String,Object>
+	 * @param account
+	 * @param password
+	 * @param validCode
+	 * @param sex
+	 * @param mail
+	 * @param birth
+	 * @return
+	 */
 	@RequestMapping("/regist/toRegist")
 	@ResponseBody
 	public Map<String, Object> toRegist(String account,String password,String validCode,String sex,String mail,String birth){
@@ -98,6 +109,11 @@ public class UserController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 用户退出
+	 * @Return Type:String
+	 * @return
+	 */
 	@RequestMapping("/quit")
 	public String quit() {
 		if(null != UserContext.getCurrentUser()) {
@@ -106,6 +122,11 @@ public class UserController {
 		return "redirect:/user";
 	}
 	
+	/**
+	 * @Description: 获取所有的游戏类型
+	 * @Return Type:Map<String,Object>
+	 * @return
+	 */
 	@RequestMapping("/index/getAllTypes")
 	@ResponseBody
 	public Map<String,Object> getAllTypes(){
@@ -121,6 +142,14 @@ public class UserController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 条件查询加分页
+	 * @Return Type:String
+	 * @param name
+	 * @param typeId
+	 * @param ra
+	 * @return
+	 */
 	@RequestMapping("/index/queryByCondition")
 	public String queryByCondition(String name,String typeId,RedirectAttributes ra) {
 		ra.addFlashAttribute("name", name);
@@ -128,6 +157,13 @@ public class UserController {
 		return "redirect:/user";
 	}
 	
+	/**
+	 * @Description: 密保卡充值
+	 * @Return Type:Map<String,Object>
+	 * @param number
+	 * @param password
+	 * @return
+	 */
 	@RequestMapping("/cardCharge")
 	@ResponseBody
 	public Map<String, Object> cardCharge(String number,String password){
@@ -154,6 +190,13 @@ public class UserController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 修改密码
+	 * @Return Type:Map<String,Object>
+	 * @param oldPwd
+	 * @param newPwd
+	 * @return
+	 */
 	@RequestMapping("/updatePwd")
 	@ResponseBody
 	public Map<String, Object> updatePwd(String oldPwd,String newPwd){
@@ -170,6 +213,15 @@ public class UserController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 购买游戏
+	 * @Return Type:Map<String,Object>
+	 * @param gameId
+	 * @param payType
+	 * @param tariffe
+	 * @param currency
+	 * @return
+	 */
 	@RequestMapping("/downGame")
 	@ResponseBody
 	public Map<String, Object> downGame(Long gameId,String payType,String tariffe,String currency){

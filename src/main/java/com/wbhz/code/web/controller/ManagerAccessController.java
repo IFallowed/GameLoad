@@ -157,6 +157,17 @@ public class ManagerAccessController {
 		return "/exchange/exchange";
 	}
 	
+	/**
+	 * @Description: 密保卡管理入口
+	 * @Return Type:String
+	 * @param number
+	 * @param startTime
+	 * @param provId
+	 * @param endTime
+	 * @param pageNo
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/manager/card")
 	public String toCard(@ModelAttribute("number")String number,@ModelAttribute("startTime")String startTime,@ModelAttribute("provId")String provId,@ModelAttribute("endTime")String endTime,String pageNo,Model model) {
 		Map<String, Object> map = cardService.listByConditionWithPage(number,startTime,endTime,provId,pageNo);

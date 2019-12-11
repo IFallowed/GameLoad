@@ -19,7 +19,15 @@
 <script type="text/javascript" src="../../myjs/uTop.js"></script>
 <script type="text/javascript" src="../../myjs/uDetail.js"></script>
 
-
+<style type="text/css">
+#time {
+	color: #000;
+	text-align: center;
+	position: absolute;
+	top: 15px;
+	left: 220px;
+}
+</style>
 </head>
 <body>
 
@@ -31,8 +39,16 @@
 				<span class="sr-only">切换导航</span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="../user">游币手机下载门户网站</a>
+			<a class="navbar-brand" href="../user">游币手机下载门户网站</a> <a id="time"></a>
 		</div>
+		<script>
+			document.getElementById('time').innerHTML = new Date()
+					.toLocaleString()
+					+ ' 星期' + '日一二三四五六'.charAt(new Date().getDay());
+			setInterval(
+					"document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+					1000);
+		</script>
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
 
@@ -72,13 +88,20 @@
 		<div class="col-md-12">
 			<ul class="nav nav-pills col-md-offset-3">
 				<li class=><a href="../user" class="btn btn-primary">首页</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1" class="btn btn-primary">棋牌桌游</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1" class="btn btn-primary">动作射击</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1" class="btn btn-primary">体育竞技</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1" class="btn btn-primary">角色扮演</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1" class="btn btn-primary">休闲益智</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1" class="btn btn-primary">MOBA</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1" class="btn btn-primary">经营养成</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1"
+					class="btn btn-primary">棋牌桌游</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1"
+					class="btn btn-primary">动作射击</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1"
+					class="btn btn-primary">体育竞技</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1"
+					class="btn btn-primary">角色扮演</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1"
+					class="btn btn-primary">休闲益智</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1"
+					class="btn btn-primary">MOBA</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1"
+					class="btn btn-primary">经营养成</a></li>
 			</ul>
 		</div>
 	</div>
@@ -99,11 +122,12 @@
 								<td><strong>密码:</strong>${user.password }</td>
 							</tr>
 							<tr>
-								<c:set value="${user.sex}" var="index"/>
+								<c:set value="${user.sex}" var="index" />
 								<td><strong>性别:</strong>${sexMap[index]}</td>
 							</tr>
 							<tr>
-								<td><strong>生日:</strong><fmt:formatDate value="${user.birth}" pattern="yyyy-MM-dd"/></td>
+								<td><strong>生日:</strong> <fmt:formatDate
+										value="${user.birth}" pattern="yyyy-MM-dd" /></td>
 							</tr>
 							<tr>
 								<td><strong>邮箱:</strong>${user.mail }</td>
@@ -120,21 +144,20 @@
 							<c:choose>
 								<c:when test="${endTime != null}">
 									<tr>
-										<td><strong>密保额度有效结束时间:</strong> <fmt:formatDate value="${endTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+										<td><strong>密保额度有效结束时间:</strong> <fmt:formatDate
+												value="${endTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 									</tr>
 								</c:when>
 							</c:choose>
-							
+
 
 						</tbody>
 					</table>
 
 					<a class="btn btn-warning" href="../user">返回上页</a> <a
 						class="btn btn-primary" data-toggle="modal"
-						data-target="#pwdModal">修改密码</a>
-						<a
-						class="btn btn-primary" data-toggle="modal"
-						data-target="#phoneModal">绑定手机 </a>
+						data-target="#pwdModal">修改密码</a> <a class="btn btn-primary"
+						data-toggle="modal" data-target="#phoneModal">绑定手机 </a>
 				</div>
 			</div>
 		</div>
@@ -160,7 +183,7 @@
 							<label for="firstname" class="col-sm-2 control-label">原密码：</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="oldPwd"
-									 placeholder="请输入原密码"> 
+									placeholder="请输入原密码">
 								<div class="row">
 									<div class="col-xs-3 col-sm-5">
 										<span id="oldMsg"></span>
@@ -191,7 +214,7 @@
 		</div>
 	</div>
 
-<div class="modal fade" id="phoneModal" tabindex="-1">
+	<div class="modal fade" id="phoneModal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -205,7 +228,7 @@
 							<label for="firstname" class="col-sm-2 control-label">手机号：</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="oldPwd"
-									 placeholder="请输入手机号"> 
+									placeholder="请输入手机号">
 								<div class="row">
 									<div class="col-xs-3 col-sm-5">
 										<span id="numberMsg"></span>

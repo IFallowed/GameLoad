@@ -144,6 +144,14 @@ ul {
 .hidden {
 	visibility: hidden;
 }
+
+#time {
+	color: #000;
+	text-align: center;
+	position: absolute;
+	top: 15px;
+	left: 220px;
+}
 </style>
 <script src="../../js/jquery-accordion-menu.js" type="text/javascript"></script>
 </head>
@@ -156,8 +164,17 @@ ul {
 				<span class="sr-only">切换导航</span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="../user">游币手机下载门户网站</a>
+			<a class="navbar-brand" href="../user">游币手机下载门户网站</a> <a id="time"></a>
 		</div>
+		<script>
+			document.getElementById('time').innerHTML = new Date()
+					.toLocaleString()
+					+ ' 星期' + '日一二三四五六'.charAt(new Date().getDay());
+			setInterval(
+					"document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+					1000);
+		</script>
+
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
 
@@ -202,11 +219,11 @@ ul {
 								<input type="text" class="form-control" id="cardNumber"
 									name="cardNumber" placeholder="请输入卡号"> <input
 									type="hidden" name="userId" value="" />
-							<div class="row">
-								<div class="col-xs-3 col-sm-5">
-									<span id="numberMsg"></span>
+								<div class="row">
+									<div class="col-xs-3 col-sm-5">
+										<span id="numberMsg"></span>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -214,11 +231,11 @@ ul {
 							<div class="col-sm-10">
 								<input type="text" class="form-control" placeholder="请输入卡密码"
 									id="cardPwd" name="cardPwd" />
-							<div class="row">
-								<div class="col-xs-3 col-sm-5">
-									<span id="pwdMsg"></span>
+								<div class="row">
+									<div class="col-xs-3 col-sm-5">
+										<span id="pwdMsg"></span>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -239,13 +256,20 @@ ul {
 		<div class="col-md-12">
 			<ul class="nav nav-pills col-md-offset-1">
 				<li class=><a href="../user" class="btn btn-primary">首页</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1" class="btn btn-primary">棋牌桌游</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1" class="btn btn-primary">动作射击</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1" class="btn btn-primary">体育竞技</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1" class="btn btn-primary">角色扮演</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1" class="btn btn-primary">休闲益智</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1" class="btn btn-primary">MOBA</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1" class="btn btn-primary">经营养成</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1"
+					class="btn btn-primary">棋牌桌游</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1"
+					class="btn btn-primary">动作射击</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1"
+					class="btn btn-primary">体育竞技</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1"
+					class="btn btn-primary">角色扮演</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1"
+					class="btn btn-primary">休闲益智</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1"
+					class="btn btn-primary">MOBA</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1"
+					class="btn btn-primary">经营养成</a></li>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 				<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
@@ -350,8 +374,6 @@ ul {
 							<li><a href="#"><i class="fa fa-suitcase"></i>更多类型 </a>
 								<ul class="submenu" id="leftUl">
 								</ul></li>
-
-
 						</ul>
 
 						<div class="jquery-accordion-menu-footer">Footer</div>
@@ -364,23 +386,23 @@ ul {
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${games }" var="game">
-						<div class="col-md-6 col-sm-6 ">
-							<div class="thumbnail">
-								<img src="/images/cover/${game.cover }" width="150"
-									height="150px" alt="">
-								<div class="caption">
-									<h3 style="text-align: center;">${game.name }</h3>
-									<p>
-										<a href="../user/gameDetail?id=${game.id }" class="btn btn-primary"
-											style="margin-left: 120px;">游戏详情</a>
-									</p>
+								<div class="col-md-6 col-sm-6 ">
+									<div class="thumbnail">
+										<img src="/images/cover/${game.cover }" width="150"
+											height="150px" alt="">
+										<div class="caption">
+											<h3 style="text-align: center;">${game.name }</h3>
+											<p>
+												<a href="../user/gameDetail?id=${game.id }"
+													class="btn btn-primary" style="margin-left: 120px;">游戏详情</a>
+											</p>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-					</c:forEach>
+							</c:forEach>
 						</c:otherwise>
 					</c:choose>
-					
+
 				</div>
 				<div class=" page">
 					<div>

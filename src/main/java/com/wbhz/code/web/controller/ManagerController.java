@@ -69,6 +69,11 @@ public class ManagerController {
 		return resultMap;
 	}
 	
+	/**
+	 * @Description: 管理员退出
+	 * @Return Type:String
+	 * @return
+	 */
 	@RequestMapping("/quit")
 	public String quit() {
 		if(null != UserContext.getCurrentManager()) {

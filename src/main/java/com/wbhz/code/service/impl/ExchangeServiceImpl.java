@@ -50,6 +50,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 	public Map<String, Object> listByConditionWithPage(String provId, String pageNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long prov = null;
+		//将省份id转换成Long
 		if (null != provId && !"".equals(provId)) {
 			prov = Long.valueOf(provId);
 		}
@@ -60,6 +61,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 		}
 		// 设置分页
 		Page<User> page = PageHelper.startPage(pageno, 5, true);
+		//条件查询
 		map.put("datalist", exchangeMapper.selectAllByCondition(prov));
 		map.put("totalPage", page.getPages());
 		map.put("pageNo", page.getPageNum());
@@ -84,7 +86,7 @@ public class ExchangeServiceImpl implements ExchangeService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Province> getNoSaveExchange() {
-		
+		//返回没有设置兑换比例的省份
 		return provinceMapper.selectProvinceWithOutExchange();
 	}
 

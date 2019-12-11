@@ -85,6 +85,7 @@ public class UserAccessController {
 			System.out.println(type);
 			status = type.getStatus();
 		}
+		System.out.println("type="+typeId);
 		Map<String, Object> map = gameService.listByConditionWithPage(name,typeId,pageNo);
 		if("20".equals(status)) {
 			model.addAttribute("games",map.get("datalist"));
@@ -99,6 +100,13 @@ public class UserAccessController {
 		return "/user/portal";
 	}
 	
+	/**
+	 * @Description: 转向游戏详情页面
+	 * @Return Type:String
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/user/gameDetail")
 	public String toGameDetail(Long id,Model model) {
 		Game game = gameService.getById(id);
@@ -109,6 +117,14 @@ public class UserAccessController {
 		return "/user/gameDetail";
 	}
 	
+	/**
+	 * 
+	 * @Description: 转向充值记录页面
+	 * @Return Type:String
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/user/prepaid")
 	public String toPrepaid(Long id,Model model) {
 		Prepaid prepaid = prepaidService.getByUserIdInEffect(id);
@@ -121,6 +137,13 @@ public class UserAccessController {
 		return "/user/prepaid";
 	}
 	
+	/**
+	 * @Description: 转向用户信息页面
+	 * @Return Type:String
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/user/userDetail")
 	public String toUserDetail(Long id,Model model) {
 		User user = userService.getById(id);
@@ -136,6 +159,13 @@ public class UserAccessController {
 		return "/user/userDetail";
 	}
 	
+	/**
+	 * @Description: 转向消费记录页面
+	 * @Return Type:String
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/user/expense")
 	public String toExpense(Long id,Model model) {
 		List<Map<String, Object>> expenses = expenseService.listAll(id);

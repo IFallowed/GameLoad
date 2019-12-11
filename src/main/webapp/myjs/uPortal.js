@@ -7,7 +7,7 @@ $(function(){
 	$("#search").click(function(){
 		var name = $.trim($("#name").val());
 		var typeId =  $("#Alltypes").val() == 0 ? "" :  $("#Alltypes").val();
-		window.location.href = "user/queryByCondition?name=" + name + "&typeId=" + typeId;
+		window.location.href = "user/index/queryByCondition?name=" + name + "&typeId=" + typeId;
 	});
 	
 	$("#chargeBtn").click(function(){
@@ -45,6 +45,7 @@ function initSelect(){
 		url:"user/index/getAllTypes",
 		data:{},
 		dataType:"json",
+		async: false,
 		success:function(result){
 			if(result.code == "200"){
 				var arr = result.typeNames;
@@ -59,7 +60,7 @@ function initSelect(){
 					else{
 						$("#Alltypes").append("<option value='"+id+"'>"+name+"</option>");
 						if(i >= 5){
-							$("#leftUl").append("<li><a href='user/queryByCondition?pageNo=1&typeId="+id+"'><img width='50px' src='../images/cover/"+pic+"'/>"+name+"</a></li>");
+							$("#leftUl").append("<li><a href='user/index/queryByCondition?pageNo=1&typeId="+id+"'><img width='50px' src='../images/cover/"+pic+"'/>"+name+"</a></li>");
 						}
 					}
 					

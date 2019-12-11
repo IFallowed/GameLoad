@@ -113,6 +113,13 @@ public class MExchangeController {
 		return "redirect:/manager/exchange";
 	}
 	
+	/**
+	 * @Description: 转向更新页面
+	 * @Return Type:String
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/update")
 	public String update(Long id,Model model) {
 		if(null != id) {

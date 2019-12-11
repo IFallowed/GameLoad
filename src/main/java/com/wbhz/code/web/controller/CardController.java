@@ -49,6 +49,11 @@ public class CardController {
 		return "redirect:/manager/card";
 	}
 	
+	/**
+	 * @Description: 查找所有的省份
+	 * @Return Type:Map<String,Object>
+	 * @return
+	 */
 	@RequestMapping("/getAllProvinces")
 	@ResponseBody
 	public Map<String,Object> getAllProvinces(){
@@ -64,6 +69,16 @@ public class CardController {
 		return resultMap;
 	}
 
+	/**
+	 * @Description: 批量生成密保卡
+	 * @Return Type:String
+	 * @param count
+	 * @param proIds
+	 * @param amount
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
 	@RequestMapping("/save")
 	@ResponseBody
 	public String save(String count,String proIds,String amount,String startTime,String endTime) {
@@ -73,6 +88,11 @@ public class CardController {
 		return "200";
 	}
 	
+	/**
+	 * @Description:转向添加密保卡界面 
+	 * @Return Type:String
+	 * @return
+	 */
 	@RequestMapping("/add")
 	public String add() {
 		return "card/addCard";

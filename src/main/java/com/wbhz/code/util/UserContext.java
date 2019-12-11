@@ -47,6 +47,7 @@ public class UserContext {
 	}
 	
 	public static String getValiadCode() {
+		//设置验证码三分钟内有效
 		Long time = (Long) getSession().getAttribute("time");
 		if(null != time && System.currentTimeMillis() - time < 30000) {
 			return (String) getSession().getAttribute("validCode");

@@ -97,6 +97,7 @@ public class UserServiceImpl implements UserService {
 			if(!password.equals(user.getPassword())) {
 				throw new MyException("201");
 			}
+			//验证用户是否被禁用
 			else if(!"10".equals(user.getStatus())) {
 				throw new MyException(user.getStatus());
 			}
@@ -124,12 +125,11 @@ public class UserServiceImpl implements UserService {
 		User user = userMapper.selectByAccount(account);
 		//验证用户名
 		if(null == user) {
-			System.out.println(validCode);
-			System.out.println(UserContext.getValiadCode());
 			if(!validCode.equalsIgnoreCase(UserContext.getValiadCode())) {
 				throw new MyException("203");
 			}
 			else {
+				//保存新用户
 				User newUser = new User();
 				newUser.setAccount(account);
 				newUser.setPassword(password);
@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService {
 				newUser.setStatus("10");
 				newUser.setCreateTime(new Date());
 				userMapper.save(newUser);
+				//将新用户存入Session中
 				UserContext.setCurrentUser(newUser);
 			}
 		}
@@ -156,17 +157,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void chargeCard(String number, String password) throws MyException {
 		Card card = cardMapper.getByNumber(number, null);
+		//验证密保卡的存在性
 		if(null != card) {
+			//验证密码正确性
 			if(!password.equals(card.getPassword())) {
 				throw new MyException("201");
 			}
+			//检查此卡是否可以充值
 			else if(!"10".equals(card.getStatus())) {
 				throw new MyException(card.getStatus());
 			}
 			else {
-				System.out.println("UserServiceImpl.chargeCard()");
+				//设置此卡为生效状态
 				card.setStatus("13");
 				cardMapper.updateStatus(card);
+				//为用户增加密保额度
 				User user = UserContext.getCurrentUser();
 				if(null != user.getAmount()) {
 					user.setAmount(user.getAmount().add(card.getAmount()));
@@ -174,7 +179,9 @@ public class UserServiceImpl implements UserService {
 				else{
 					user.setAmount(card.getAmount());
 				}
+				//修改用户的账户余额
 				userMapper.updateMoney(user);
+				//向充值记录表内新增一条记录
 				Prepaid prepaid = new Prepaid();
 				prepaid.setUser(user);
 				prepaid.setCard(card);
@@ -192,6 +199,7 @@ public class UserServiceImpl implements UserService {
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public User getById(Long id) {
 		return userMapper.selectById(id);
 	}

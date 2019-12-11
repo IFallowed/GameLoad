@@ -86,6 +86,7 @@ public class GameTypeServiceImpl implements GameTypeService {
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public GameType getById(Long id) {
 		return gameTypeMapper.selectById(id);
 	}
@@ -106,6 +107,7 @@ public class GameTypeServiceImpl implements GameTypeService {
 	 * @param name
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public GameType getByName(String name) {
 		return gameTypeMapper.selectByName(name);
 	}
@@ -115,6 +117,7 @@ public class GameTypeServiceImpl implements GameTypeService {
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<Map<String, Object>> getAllName() {
 		return gameTypeMapper.selectAllName();
 	}

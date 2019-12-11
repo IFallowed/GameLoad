@@ -28,9 +28,11 @@ public class Expense {
 	 * 消费金额
 	 */
 	private	BigDecimal monetary;
+	//消费方式
 	private String operation;
 	private Date createTime;
 	private Date updateTime;
+	//下载次数
 	private Integer downloads;
 	private String status;
 }

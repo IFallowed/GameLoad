@@ -30,7 +30,9 @@ public class PrepaidServiceImpl implements PrepaidService{
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Prepaid getByUserIdInEffect(Long id) {
+		//返回生效中的记录
 		return prepaidMapper.selectByUserIdInEffect(id,"13");
 	}
 }

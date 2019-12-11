@@ -22,10 +22,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Exchange {
 	private Long id;
+	//兑换比例
 	private BigDecimal charge;
 	private Date createTime;
 	private Date updateTime;
 	private String status;
-	//维护关系
+	//维护关系---prvId
 	private Province province;
 }

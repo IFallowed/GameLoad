@@ -21,7 +21,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Prepaid {
 	private Long id;
+	//维护关系----userId
 	private User user;
+	//维护关系----cardId
 	private Card card;
 	private Date createTime;
 }

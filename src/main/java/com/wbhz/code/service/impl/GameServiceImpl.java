@@ -52,6 +52,7 @@ public class GameServiceImpl implements GameService {
 	public Map<String, Object> listByConditionWithPage(String name, String typeId, String pageNo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long type = null;
+		//将游戏类型id转换成Long
 		if(null != typeId && !"".equals(typeId)) {
 			type = Long.valueOf(typeId);
 		}
@@ -114,9 +115,7 @@ public class GameServiceImpl implements GameService {
             } 
         }  
         screenName = screenName.deleteCharAt(screenName.length()-1);
-        System.out.println("coverName=:" + coverName);
-        System.out.println("screenName=:" + screenName);
-        
+        //保存图片
         game.setCover(coverName);
         game.setScreen(screenName.toString());
         game.setCreateTime(new Date());
@@ -124,12 +123,25 @@ public class GameServiceImpl implements GameService {
         gameMapper.save(game);
 	}
 	
+	/**
+	 * 
+	 * @Description: 保存单张图片
+	 * @Return Type:String
+	 * @param file
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	private String saveFile(MultipartFile file,String url) throws Exception {
 		String fileName = "";
+		//验证文件的内容
 		if(file != null && !file.isEmpty()) {
+			//获取文件名
 			fileName = file.getOriginalFilename();
+			//获取要保存的路径
 			String saveDir = servletContext.getRealPath(url);
 			Path path = Paths.get(saveDir,fileName);
+			//验证此路径下是否存在相同文件内
 			if(!path.toFile().exists()) {
 				Files.copy(file.getInputStream(),path);
 			}
@@ -156,19 +168,25 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public void update(Game game, MultipartFile coverfile, MultipartFile screenfile1, MultipartFile screenfile2,
 			MultipartFile screenfile3) throws Exception {
+		//修改封面图片
 		if(coverfile != null) {
 			game.setCover(saveFile(coverfile, "/images/cover"));
 		}else {
 			game.setCover(null);
 		}
+		//修改内容截图
 		String screen = game.getScreen();
+		//修改第一张截图
 		if(null != screenfile1 && !screenfile1.isEmpty()) {
+			//获取第一张截图的名字
 			screen = saveFile(screenfile1, "/images/screen") + screen.substring(screen.indexOf("|"));
 		}
 		if(null != screenfile2 && !screenfile2.isEmpty()) {
+			//获取第二张截图的名字
 			screen = screen.substring(0,screen.indexOf("|") + 1) + saveFile(screenfile2, "/images/screen") + screen.substring(screen.lastIndexOf("|"));
 		}
 		if(null != screenfile3 && !screenfile3.isEmpty()) {
+			//获取第三张截图的名字
 			screen = screen.substring(0,screen.lastIndexOf("|")+1) + saveFile(screenfile3, "/images/screen");
 		}
 		game.setScreen(screen);

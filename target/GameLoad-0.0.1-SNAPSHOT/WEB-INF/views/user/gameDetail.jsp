@@ -22,7 +22,15 @@
 <script src="../../js/app.js"></script>
 <script type="text/javascript" src="../../myjs/uGame.js"></script>
 <script type="text/javascript" src="../../myjs/uTop.js"></script>
-
+<style type="text/css">
+#time {
+	color: #000;
+	text-align: center;
+	position: absolute;
+	top: 15px;
+	left: 220px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -33,8 +41,16 @@
 				<span class="sr-only">切换导航</span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="../user">游币手机下载门户网站</a>
+			<a class="navbar-brand" href="../user">游币手机下载门户网站</a> <a id="time"></a>
 		</div>
+		<script>
+			document.getElementById('time').innerHTML = new Date()
+					.toLocaleString()
+					+ ' 星期' + '日一二三四五六'.charAt(new Date().getDay());
+			setInterval(
+					"document.getElementById('time').innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",
+					1000);
+		</script>
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
 
@@ -67,13 +83,20 @@
 		<div class="col-md-12">
 			<ul class="nav nav-pills col-md-offset-3">
 				<li class=><a href="../user" class="btn btn-primary">首页</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1" class="btn btn-primary">棋牌桌游</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1" class="btn btn-primary">动作射击</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1" class="btn btn-primary">体育竞技</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1" class="btn btn-primary">角色扮演</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1" class="btn btn-primary">休闲益智</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1" class="btn btn-primary">MOBA</a></li>
-				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1" class="btn btn-primary">经营养成</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=1&pageNo=1"
+					class="btn btn-primary">棋牌桌游</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=2&pageNo=1"
+					class="btn btn-primary">动作射击</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=3&pageNo=1"
+					class="btn btn-primary">体育竞技</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=4&pageNo=1"
+					class="btn btn-primary">角色扮演</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=5&pageNo=1"
+					class="btn btn-primary">休闲益智</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=6&pageNo=1"
+					class="btn btn-primary">MOBA</a></li>
+				<li><a href="../user/index/queryByCondition?typeId=8&pageNo=1"
+					class="btn btn-primary">经营养成</a></li>
 			</ul>
 		</div>
 	</div>
@@ -95,12 +118,12 @@
 						<strong>游戏类型:</strong>${game.gameType.name }
 					</p>
 					<p>
-						<strong>话费价格:</strong>${game.tariffe }元
-						<input type="hidden" id="tariffe" value="${game.tariffe }">
+						<strong>话费价格:</strong>${game.tariffe }元 <input type="hidden"
+							id="tariffe" value="${game.tariffe }">
 					</p>
 					<p>
-						<strong>游币价格:</strong>${game.currency }(单位:游币)
-						<input type="hidden" id="currency" value="${game.currency }">
+						<strong>游币价格:</strong>${game.currency }(单位:游币) <input
+							type="hidden" id="currency" value="${game.currency }">
 					</p>
 					<p>
 						<strong>开发商:</strong>${game.developers }

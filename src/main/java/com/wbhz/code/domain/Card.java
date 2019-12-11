@@ -24,11 +24,12 @@ public class Card {
 	private Long id;
 	private String number;
 	private String password;
+	//密保卡余额
 	private BigDecimal amount;
 	private Date startTime;
 	private Date endTime;
 	private String status;
 	private Date createTime;
-	//关系维护
+	//关系维护--provId
 	private Province province;
 }
