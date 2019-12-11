@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 加载数据库属性文件 -->
+	<context:property-placeholder location="classpath:db.properties" system-properties-mode="NEVER"/>
+	
+	<!-- 配置数据库连接池 -->
+	<bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+	</bean>
+	
+	<!-- 配置SqlSessionFactory -->
+	<bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="configLocation" value="classpath:MyBatis-config.xml" />
+		<property name="typeAliasesPackage" value="com.wbhz.code.domain" />
+		<property name="mapperLocations" value="classpath:mappers/*Mapper.xml" />
+	</bean>
+	
+	<!-- 配置mapper接口扫描器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.wbhz.code.mapper" />
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="myDataSource" />
+	</bean>
+	
+	<!-- 配置DI注解解析器 -->
+	<context:annotation-config />
+	
+	<!-- 事务注解解析器 -->
+	<tx:annotation-driven transaction-manager="txManager"/>
+</beans>

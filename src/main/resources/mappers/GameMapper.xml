@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.GameMapper">
+	<resultMap type="Game" id="baseResultMap">
+		<id column="g_id" property="id" />
+		<result column="g_name" property="name" />
+		<result column="g_status" property="status" />
+		<result column="g_cover" property="cover" />
+		<result column="g_screen" property="screen" />
+		<result column="g_currency" property="currency" />
+		<result column="g_tariffe" property="tariffe" />
+		<result column="g_developers" property="developers" />
+		<result column="g_filing" property="filing" />
+		<result column="g_detail" property="detail" />
+		<result column="g_introduction" property="introduction" />
+		<result column="g_create_time" property="createTime" />
+		<result column="g_update_time" property="updateTime" />
+	</resultMap>
+
+	<resultMap type="Game" id="GameAndGameTypeMap"
+		extends="baseResultMap">
+		<association property="gameType" javaType="GameType"
+			columnPrefix="gt_">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="status" property="status" />
+			<result column="picture" property="picture" />
+			<result column="create_time" property="createTime" />
+			<result column="update_time" property="updateTime" />
+		</association>
+	</resultMap>
+
+	<sql id="base_selectWithGameType">
+		select
+		g_id,g_name,g_status,g_cover,g_screen,g_currency,g_tariffe,g_developers,g_filing,g_detail,g_introduction,g_create_time,g_update_time,
+		gt_id,gt_name from t_game
+		inner join t_game_type
+		on g_type = gt_id
+	</sql>
+
+	<select id="selectAllByCondition" resultMap="GameAndGameTypeMap">
+		<include refid="base_selectWithGameType" />
+		<where>
+			<if test="name != null and name != ''">
+				and g_name like concat('%',#{name},'%')
+			</if>
+			<if test="typeId != null and typeId != ''">
+				and g_type = #{typeId}
+			</if>
+			and g_status = '20'
+		</where>
+		group by g_id
+	</select>
+
+	<select id="selectById" resultMap="GameAndGameTypeMap">
+		<include refid="base_selectWithGameType" />
+		<where>
+			g_id = #{id}
+		</where>
+	</select>
+
+	<select id="selectByName" resultMap="GameAndGameTypeMap">
+		<include refid="base_selectWithGameType" />
+		<where>
+			g_name = #{name}
+		</where>
+	</select>
+	
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		insert into t_game (g_name,g_status,g_type,g_cover,g_screen,g_currency,g_tariffe,g_developers,g_filing,g_detail,g_introduction,g_create_time,g_update_time)
+		values
+		(#{name},#{status},#{gameType.id},#{cover},#{screen},#{currency},#{tariffe},#{developers},#{filing},#{detail},#{introduction},#{createTime},#{updateTime})
+	</insert>
+	
+	<delete id="delete"> 
+		delete from t_game
+		<where>
+			g_id in
+			<foreach collection="ids" open="(" close=")" separator=","
+				item="id">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+	
+	<update id="update">
+		update t_game
+		<set>
+			<if test="name != null and name != ''">
+				g_name = #{name},
+			</if>
+			<if test="status != null and status != ''">
+				g_status = #{status},
+			</if>
+			<if test="gameType.id != null and gameType.id != ''">
+				g_type = #{gameType.id},
+			</if>
+			<if test="cover != null and cover != ''">
+				g_cover = #{cover},
+			</if>
+			<if test="screen != null and screen != ''">
+				g_screen = #{screen},
+			</if>
+			<if test="currency != null and currency != ''">
+				g_currency = #{currency},
+			</if>
+			<if test="tariffe != null and tariffe != ''">
+				g_tariffe = #{tariffe},
+			</if>
+			<if test="developers != null and developers != ''">
+				g_developers = #{developers},
+			</if>
+			<if test="filing != null and filing != ''">
+				g_filing = #{filing},
+			</if>
+			<if test="detail != null and detail != ''">
+				g_detail = #{detail},
+			</if>
+			<if test="introduction != null and introduction != ''">
+				g_introduction = #{introduction},
+			</if>
+			<if test="updateTime != null ">
+				g_update_time = #{updateTime},
+			</if>
+		</set>
+			<where>
+				g_id = #{id}
+			</where>
+	</update>
+</mapper>

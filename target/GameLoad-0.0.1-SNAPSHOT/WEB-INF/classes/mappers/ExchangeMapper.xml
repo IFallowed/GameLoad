@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.ExchangeMapper">
+	<resultMap type="Exchange" id="baseResultMap">
+		<id column="e_id" property="id"/>
+		<result column="e_charge" property="charge"/>
+		<result column="e_create_time" property="createTime"/>
+		<result column="e_update_time" property="updateTime"/>
+		<result column="e_status" property="status"/>
+	</resultMap>
+	
+	<resultMap type="Exchange" id="ExchangeAndProvinceMap" extends="baseResultMap">
+		<association property="province" javaType="Province" columnPrefix="pro_">
+			<id column="id" property="id"/>
+			<result column="name" property="name"/>
+		</association>
+	</resultMap>
+	
+	<sql id="base_selectWithProvince">
+		select e_id,e_charge,e_create_time,e_update_time,e_status,
+		pro_id,pro_name from t_exchange
+		inner join t_province
+		on e_provId = pro_id
+	</sql>
+	
+	<select id="selectAllByCondition" resultMap="ExchangeAndProvinceMap">
+		<include refid="base_selectWithProvince" />
+		<where>
+			<if test="provId != null and provId != ''">
+				and e_provId = #{provId}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete">
+		delete from t_exchange
+		<where>
+			e_id in
+			<foreach collection="ids" open="(" close=")" separator=","
+				item="id">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into t_exchange (e_charge,e_provId,e_create_time,e_update_time,e_status)
+		values
+		(#{charge},#{province.id},#{createTime},#{updateTime},#{status})
+	</insert>
+	
+	<select id="selectById" resultMap="ExchangeAndProvinceMap">
+		<include refid="base_selectWithProvince" />
+		<where>
+			e_id=#{id}
+		</where>
+	</select>
+	
+	<update id="update">
+		update t_exchange
+		<set>
+			<if test="status != null ">
+				e_status = #{status},
+			</if>
+			<if test="charge != null">
+				e_charge = #{charge},
+			</if>
+			<if test="updateTime != null">
+				e_update_time = #{updateTime}
+			</if>
+		</set>
+		<where>
+			e_id = #{id}
+		</where>
+	</update>
+</mapper>

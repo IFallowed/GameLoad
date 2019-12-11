@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.UserMapper">
+	<resultMap type="User" id="baseResultMap">
+		<id column="u_id" property="id"/>
+		<result column="u_account" property="account"/>
+		<result column="u_password" property="password"/>
+		<result column="u_birth" property="birth"/>
+		<result column="u_mail" property="mail"/>
+		<result column="u_tariffe" property="tariffe"/>
+		<result column="u_currency" property="currency"/>
+		<result column="u_cardAmount" property="amount"/>
+		<result column="u_status" property="status"/>
+		<result column="u_create_time" property="createTime"/>
+		<result column="u_sex" property="sex"/>
+	</resultMap>
+	
+	<sql id="base_select">
+		select u_id,u_account,u_password,u_birth,u_mail,u_tariffe,u_currency,u_cardAmount,u_status,u_create_time,u_sex from t_user
+	</sql>
+	
+	<select id="selectAllByCondition" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			<if test="account != null and account != ''">
+				and u_account like concat('%',#{account},'%')
+			</if>
+			<if test="mail != null and mail != ''">
+				and u_mail like concat('%',#{mail},'%')
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateStatus">
+		update t_user
+		<set>
+			u_status=#{status},
+		</set>
+		<where>
+			u_id in
+			<foreach collection="ids" open="(" close=")" separator="," item="id">
+				#{id}
+			</foreach>
+		</where>
+	</update>
+	
+	<select id="selectByAccount" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			u_account=#{account}
+		</where>
+	</select>
+	
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user (u_account,u_password,u_birth,u_mail,u_status,u_create_time,u_sex)
+		values
+		(#{account},#{password},#{birth},#{mail},#{status},#{createTime},#{sex})
+	</insert>
+	
+	<update id="updateMoney">
+		update t_user 
+		<set>
+			<if test="tariffe != null">
+				u_tariffe = #{tariffe},
+			</if>
+			<if test="currency != null">
+				u_currency = #{currency},
+			</if>
+			<if test="amount != null">
+				u_cardAmount = #{amount}
+			</if>
+		</set>
+		<where>
+			u_id = #{id}
+		</where>
+	</update>
+	
+	<select id="selectById" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			u_id=#{id}
+		</where>
+	</select>
+	
+	<update id="updatePwd">
+		update t_user set u_password = #{password} where u_id = #{id}
+	</update>
+</mapper>

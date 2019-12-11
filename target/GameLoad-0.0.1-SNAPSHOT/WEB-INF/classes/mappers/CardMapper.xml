@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.CardMapper">
+	<resultMap type="Card" id="baseResultMap">
+		<id column="card_id" property="id"/>
+		<result column="card_number" property="number"/>
+		<result column="card_password" property="password"/>
+		<result column="card_amount" property="amount"/>
+		<result column="card_start_time" property="startTime"/>
+		<result column="card_end_time" property="endTime"/>
+		<result column="card_status" property="status"/>
+		<result column="card_create_time" property="createTime"/>
+	</resultMap>
+	
+	<resultMap type="Card" id="CardAndProvinceMap" extends="baseResultMap">
+		<association property="province" javaType="Province" columnPrefix="pro_">
+			<id column="id" property="id"/>
+			<result column="name" property="name"/>
+		</association>
+	</resultMap>
+	
+	<sql id="base_selectWithProvince">
+		select card_id,card_number,card_password,card_amount,card_start_time,card_end_time,card_status,card_create_time,
+		pro_id,pro_name from t_card
+		inner join t_province
+		on card_proId = pro_id
+	</sql>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into t_card (card_number,card_password,card_amount,card_proId,card_start_time,card_end_time,card_status,card_create_time)
+		values
+		(#{number},#{password},#{amount},#{province.id},#{startTime},#{endTime},#{status},#{createTime})
+	</insert>
+	
+	<select id="selectAllByCondition" resultMap="CardAndProvinceMap">
+		<include refid="base_selectWithProvince" />
+		<where>
+			<if test="number != null and number != ''">
+				and card_number like concat('%',#{number},'%')
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and card_start_time >= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and card_end_time &lt;= #{endTime}
+			</if>
+			<if test="provId != null">
+				and card_proId = #{provId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getByNumber" resultMap="CardAndProvinceMap">
+		<include refid="base_selectWithProvince" />
+		<where>
+			<if test="number != null and number != ''">
+				and card_number = #{number}
+			</if>
+			<if test="provId != null">
+				 and pro_id =#{provId}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateStatus">
+		update t_card
+		<set>
+			card_status = #{status},
+		</set>
+		<where>
+			card_id=#{id}
+		</where>
+	</update>
+</mapper>

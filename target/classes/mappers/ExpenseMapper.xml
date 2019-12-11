@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.ExpenseMapper">
+	<resultMap type="Expense" id="baseResultMap">
+		<id column="exp_id" property="id"/>
+		<result column="exp_monetary" property="monetary"/>
+		<result column="exp_operation" property="operation"/>
+		<result column="exp_userId" property="userId"/>
+		<result column="exp_gameId" property="gameId"/>
+		<result column="exp_create_time" property="createTime"/>
+		<result column="exp_update_time" property="updateTime"/>
+		<result column="exp_downloads" property="downloads"/>
+		<result column="exp_status" property="status"/>
+	</resultMap>
+	
+	<sql id="base_select">
+		select exp_id,exp_userId,exp_gameId,exp_monetary,exp_operation,exp_create_time,exp_create_time,exp_downloads,exp_status from t_expense
+	</sql>
+	
+	<select id="selectByUserIdAndgameId" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			exp_userId=#{userId} and exp_gameId=#{gameId} and exp_status = '13'
+		</where>
+	</select>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into t_expense (exp_userId,exp_gameId,exp_monetary,exp_operation,exp_create_time,exp_update_time,exp_downloads,exp_status)
+		values
+		(#{userId},#{gameId},#{monetary},#{operation},#{createTime},#{updateTime},#{downloads},#{status})
+	</insert>
+	
+	<update id="updateDownloads">
+		update t_expense set exp_downloads = #{downloads},exp_update_time = #{updateTime}
+		<where>
+			exp_id = #{id}
+		</where>
+	</update>
+	
+<!-- 	<select id="selectAll" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			exp_userId = #{userId}
+		</where>
+	</select> -->
+	
+	<select id="selectAll" resultType="map">
+		select exp_operation,exp_monetary,exp_create_time,exp_update_time,exp_downloads,
+				u_account,g_name from t_expense
+				inner join t_user on exp_userId = u_id
+				inner join t_game on exp_gameId = g_id
+		<where>
+			exp_userId = #{userId}
+		</where>
+	</select>
+</mapper>

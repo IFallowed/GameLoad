@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.ProvinceMapper">
+	<resultMap type="Province" id="baseResultMap">
+		<id column="pro_id" property="id"/>
+		<result column="pro_name" property="name"/>
+	</resultMap>
+	
+	<sql id="base_select">
+		select pro_id,pro_name from t_province
+	</sql>
+	
+	<select id="listAll" resultMap="baseResultMap">
+		<include refid="base_select" />
+	</select>
+	
+	<select id="selectProvinceWithOutExchange" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			pro_id not in 
+			(select e_provId from t_exchange)
+		</where>
+	</select>
+</mapper>

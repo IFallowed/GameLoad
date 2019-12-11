@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.ManagerMapper">
+	<resultMap type="Manager" id="baseResultMap">
+		<id column="m_id" property="id"/>
+		<result column="m_account" property="account"/>
+		<result column="m_password" property="password"/>
+		<result column="m_mail" property="mail"/>
+		<result column="m_create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="base_select">
+		select m_id,m_account,m_password,m_mail,m_create_time from t_manager
+	</sql>
+	
+	<select id="selectByAccount" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			m_account=#{account}
+		</where>
+	</select>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into t_manager (m_account,m_password,m_mail,m_create_time) values (#{account},#{password},#{mail},#{createTime})
+	</insert>
+	
+	<select id="selectById" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			m_id=#{id}
+		</where>
+	</select>
+	
+	<select id="selectAll" resultMap="baseResultMap">
+		<include refid="base_select" />
+	</select>
+	
+	<update id="updateById">
+		update t_manager
+		<set>
+			<if test="account != null">
+				m_account=#{account}
+			</if>
+			<if test="password != null">
+				m_password=#{password}
+			</if>
+			<if test="mail != null">
+				m_mail=#{mail}
+			</if>
+			<if test="createTime != null">
+				m_create_time=#{createTime}
+			</if>
+		</set>
+		<where>
+			m_id=#{id}
+		</where>
+	</update>
+	
+	<delete id="deleteById">
+		delete from t_manager
+		<where>
+			m_id=#{id}
+		</where>
+	</delete>
+</mapper>

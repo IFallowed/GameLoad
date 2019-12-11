@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbhz.code.mapper.GameTypeMapper">
+	<resultMap type="GameType" id="baseResultMap">
+		<id column="gt_id" property="id" />
+		<result column="gt_name" property="name" />
+		<result column="gt_status" property="status" />
+		<result column="gt_picture" property="picture" />
+		<result column="gt_create_time" property="createTime" />
+		<result column="gt_update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="base_select">
+		select
+		gt_id,gt_name,gt_status,gt_picture,gt_create_time,gt_update_time from
+		t_game_type
+	</sql>
+
+	<select id="selectAllByCondition" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			<if test="name != null and name != ''">
+				and gt_name like concat('%',#{name},'%')
+			</if>
+			<if test="status != null and status != ''">
+				and gt_status = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert
+		into t_game_type
+		(gt_name,gt_status,gt_picture,gt_create_time,gt_update_time)
+		values
+		(#{name},#{status},#{picture},#{createTime},#{updateTime})
+	</insert>
+
+	<delete id="delete">
+		delete from t_game_type
+		<where>
+			gt_id in
+			<foreach collection="ids" open="(" close=")" separator=","
+				item="id">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<select id="selectById" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			gt_id = #{id}
+		</where>
+	</select>
+
+	<select id="selectByName" resultMap="baseResultMap">
+		<include refid="base_select" />
+		<where>
+			gt_name = #{name}
+		</where>
+	</select>
+
+	<update id="update">
+		update t_game_type
+		<set>
+			<if test="name != null ">
+				gt_name=#{name},
+			</if>
+			<if test="status != null ">
+				gt_status=#{status},
+			</if>
+			<if test="picture != null ">
+				gt_picture=#{picture},
+			</if>
+			<if test="createTime != null ">
+				gt_create_time=#{createTime},
+			</if>
+			<if test="updateTime != null ">
+				gt_update_time=#{updateTime},
+			</if>
+		</set>
+		<where>
+			gt_id=#{id}
+		</where>
+	</update>
+	
+	<select id="selectAllName" resultType="map">
+		select gt_id,gt_name,gt_picture from t_game_type
+	</select>
+</mapper>
