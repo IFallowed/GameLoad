@@ -47,7 +47,7 @@
 			<if test="typeId != null and typeId != ''">
 				and g_type = #{typeId}
 			</if>
-			and g_status = '20'
+			and g_status = '20' and gt_status = '20'
 		</where>
 		group by g_id
 	</select>
